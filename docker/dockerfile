@@ -4,6 +4,5 @@ USER node
 
 COPY . /opt/app/
 USER root
-WORKDIR /opt/app/api
-
+WORKDIR /opt/app/
 CMD ["npm", "run", "start"]
