@@ -10,7 +10,7 @@ glob(`${__dirname}/**/*.route.{ts,js}`, (err: Error, files: string[]) => {
 			const endpoint = relative(__dirname, dirname(file))
 			console.log(`Iniciando rotas ${file}`)
 			// eslint-disable-next-line @typescript-eslint/no-var-requires
-			router.use(`/api/${endpoint}`, require(file))
+			router.use('/', require(file))
 		})
 	}
 })
