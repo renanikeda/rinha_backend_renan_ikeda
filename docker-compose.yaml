@@ -5,7 +5,7 @@ services:
     build: .
     hostname: app
     environment:
-      DB_URL: "postgres://admin:admin@postgres:5432/postgres"
+      DB_URL: "postgres://admin:admin@db:5432/postgres"
       DB_POOL: 35
       PINO_LOG_LEVEL: "debug"
       REQ_TIMEOUT: "2000"
