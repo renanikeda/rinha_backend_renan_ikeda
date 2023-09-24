@@ -4,10 +4,11 @@ import { contagemPessoas } from '../database/database'
 const router = Router()
 
 router.get('/', async (req, res) => {
-  console.log('Teste GET /contagem-pessoas')
-  const { rows: contagem } = await contagemPessoas()
-  console.log(`Contagem: ${JSON.stringify(contagem)}`)
-  res.status(200).end()
+  console.log('Route GET /contagem-pessoas')
+  const { rows } = await contagemPessoas()
+  const contagem = rows[0]
+  console.log(`Contagem: ${contagem?.count}`)
+  res.status(200).json(contagem)
 })
 
 

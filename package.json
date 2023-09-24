@@ -11,7 +11,8 @@
     "dev:build": "npm run build",
     "dev": "npm run dev:build && cd dist && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docker:build": "npm run build && cd docker && ./docker_image.sh"
+    "docker:build": "npm run build && cd docker && ./docker_image.sh",
+    "local": "npm run docker:build && docker-compose up"
   },
   "keywords": [],
   "author": "",
