@@ -40,35 +40,41 @@ router.post('/', validaBody, async (req, res) => {
   console.log('Route POST /pessoas')
   const { apelido, nome, nascimento, stack } = req.body
   const id = uuidv4()
-  inserirPessoa(id, apelido, nome, nascimento, stack).then(() => {
+  try {
+    const { rows: result } = await inserirPessoa(id, apelido, nome, nascimento, stack)
+    // console.log(`Result: ${JSON.stringify(result)}`)
     res.status(201).location(`/pessoas/${id}`).end()
-  }).catch(() => {
+  } catch {
     res.status(422).end()
-  })
+  }
 })
 
 router.get('/:id', async (req, res) => {
   console.log('Route GET /pessoas/:id')
   const { id } = req.params
-  getPessoa(id).then((result) => {
-    const pessoa = result.rows?.[0]
+  try {
+    const { rows: [pessoa] } = await getPessoa(id)
+    // console.log(`Pessoa: ${JSON.stringify(pessoa)}`)
     if (pessoa === undefined) {
       res.status(404).end()
     } else {
       res.status(200).json(pessoa).end()
     }
-  }).catch(() => {
+  } catch {
     res.status(404).end()
-  })
+  }
 })
 
 router.get('/', async (req, res) => {
   console.log('Route GET /pessoas/t=?')
   const termo = req.params.t
-  procuraTermo(termo).then(result => {
-    res.status(200).json(result.rows || [])
-  })
-  res.status(200).end()
+  try {
+    const { rows: result } = await procuraTermo(termo)
+    // console.log(`Termo: ${JSON.stringify(result)}`)
+    res.status(200).json(result)
+  } catch {
+    res.status(404).end()
+  }
 })
 
 module.exports = router
