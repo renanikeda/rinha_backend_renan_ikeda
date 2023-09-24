@@ -1,8 +1,10 @@
 const pg = require('pg')
-const DB_URL = process.env.DB_URL || 'postgres://admin:admin@postgres:5555/postgres'
+const { DB_URL = 'postgres://admin:admin@postgres:5432/postgres', DB_POOL = 10, REQ_TIMEOUT = 2000 } = process.env
 
 const pool = new pg.Pool({
-  connectionString: DB_URL
+  connectionString: DB_URL,
+  max: DB_POOL,
+  connectionTimeoutMillis: REQ_TIMEOUT
 });
 
 pool.on('connect', () => {
