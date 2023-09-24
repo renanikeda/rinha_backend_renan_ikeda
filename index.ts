@@ -1,4 +1,5 @@
 import express = require('express')
+const bodyParser = require('body-parser')
 import router from './router'
 
 const app = express()
@@ -12,6 +13,7 @@ console.log(`Env: ${env}`)
 console.log(`DB URL: ${db_url}`)
 
 !(async function () {
+  app.use(bodyParser.json())
   app.use(router)
   app.listen(PORT, () => console.log(`Environment : ${env} - Api ${APP} running on port ${PORT}!`))
 })()
