@@ -12,7 +12,7 @@ const validaBody = (req, res, next) => {
 
   function valida(req) {
     const { apelido, nome, nascimento, stack } = req.body
-
+    console.log({ apelido, nome, nascimento, stack })
     if(typeof apelido !== 'string' || apelido.length > 32)
       return false
 
@@ -26,17 +26,15 @@ const validaBody = (req, res, next) => {
       req.body.stack = []
 
     if(stack && stack.length)
-      req.body.stack = stack.filter((s) => typeof s !== 'string' || s === "" || s.length > 32)
+      req.body.stack = stack.filter((s) => typeof s === 'string' || s !== "" || s.length < 32)
 
     return true
   }
 
   if (!valida(req))
       return res.status(422).end()
-
   next()
 }
-
 
 router.post('/', validaBody, async (req, res) => {
   console.log('Route POST /pessoas')
