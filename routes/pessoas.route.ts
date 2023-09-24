@@ -66,8 +66,8 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  console.log('Route GET /pessoas/t=?')
-  const termo = req.params.t
+  console.log('Route GET /pessoas?t=[:termo]')
+  const termo = req.query.t
   try {
     const { rows: result } = await procuraTermo(termo)
     // console.log(`Termo: ${JSON.stringify(result)}`)

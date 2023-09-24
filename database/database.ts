@@ -27,7 +27,7 @@ export function contagemPessoas() {
 }
 
 export async function inserirPessoa(id: string, apelido: string, nome: string, nascimento: string, stack: string[]) {
-  const termo = `apelido|nome|${stack.join('|')}`
+  const termo = `${apelido}|${nome}|${stack.join('|')}`
   const query = `
     INSERT INTO
       pessoas(id, apelido, nome, nascimento, stack, termo)
@@ -42,6 +42,6 @@ export async function getPessoa(id: string) {
 }
 
 export async function procuraTermo (termo: string) {
-  const query = `SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE termo = $1 LIMIT 50`
-  return pool.query(query, [termo])
+  const query = `SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE termo LIKE $1 LIMIT 50`
+  return pool.query(query, [`%${termo}%`])
 }
