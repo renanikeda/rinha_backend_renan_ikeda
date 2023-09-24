@@ -16,7 +16,8 @@ pool.on('connect', () => {
         apelido TEXT UNIQUE NOT NULL,
         nome TEXT NOT NULL,
         nascimento DATE NOT NULL,
-        stack JSON
+        stack JSON,
+        termo TEXT
     );
   `)
 })
@@ -25,16 +26,22 @@ export function contagemPessoas() {
   return pool.query('SELECT count(id) FROM pessoas')
 }
 
-export async function inserirPessoa(id, apelido, nome, nascimento, stack) {
+export async function inserirPessoa(id: string, apelido: string, nome: string, nascimento: string, stack: string[]) {
+  const termo = `apelido|nome|${stack.join('|')}`
   const query = `
     INSERT INTO
-      pessoas(id, apelido, nome, nascimento, stack)
-      VALUES ($1, $2, $3, $4, $5::json)
+      pessoas(id, apelido, nome, nascimento, stack, termo)
+      VALUES ($1, $2, $3, $4, $5::json, $6)
   `
-  return pool.query(query, [id, apelido, nome, nascimento, JSON.stringify(stack)]);
+  return pool.query(query, [id, apelido, nome, nascimento, JSON.stringify(stack), termo]);
 }
 
-export async function getPessoa(id) {
-  const query = `SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1`
+export async function getPessoa(id: string) {
+  const query = `SELECT id, apelido, nome, nascimento, stack, termo FROM pessoas WHERE id = $1`
   return pool.query(query, [id])
+}
+
+export async function procuraTermo (termo: string) {
+  const query = `SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE termo = $1 LIMIT 50`
+  return pool.query(query, [termo])
 }

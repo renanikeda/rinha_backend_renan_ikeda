@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getPessoa, inserirPessoa } from '../database/database'
+import { getPessoa, inserirPessoa, procuraTermo } from '../database/database'
 const { v4: uuidv4 } = require('uuid')
 const { parse } = require('date-fns');
 const router = Router()
@@ -65,7 +65,11 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  console.log('Teste GET /pessoas/t=?')
+  console.log('Route GET /pessoas/t=?')
+  const termo = req.params.t
+  procuraTermo(termo).then(result => {
+    res.status(200).json(result.rows || [])
+  })
   res.status(200).end()
 })
 
