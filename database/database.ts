@@ -33,3 +33,8 @@ export async function inserirPessoa(id, apelido, nome, nascimento, stack) {
   `
   return pool.query(query, [id, apelido, nome, nascimento, JSON.stringify(stack)]);
 }
+
+export async function getPessoa(id) {
+  const query = `SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1`
+  return pool.query(query, [id])
+}
